@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="startBtn" class="button">Start Recording</button>
+    <button id="stopBtn" class="button" disabled>Stop Recording</button>
+    <a id="downloadLink" class="button" style="display:none;">Download</a>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        document.getElementById("startBtn").addEventListener("click", async () => {
+            audioChunks = [];
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const downloadLink = document.getElementById("downloadLink");
+                downloadLink.href = audioUrl;
+                downloadLink.download = "recording.webm";
+                downloadLink.style.display = "block";
+            };
+
+            mediaRecorder.start();
+            document.getElementById("startBtn").disabled = true;
+            document.getElementById("stopBtn").disabled = false;
+        });
+
+        document.getElementById("stopBtn").addEventListener("click", () => {
+            mediaRecorder.stop();
+            document.getElementById("startBtn").disabled = false;
+            document.getElementById("stopBtn").disabled = true;
+        });
+    </script>
+</body>
+</html>

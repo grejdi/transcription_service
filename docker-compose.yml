@@ -1,0 +1,12 @@
+
+version: "3"
+
+services:
+  db:
+    container_name: transcription_service_db__local
+    image: postgres:16.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
