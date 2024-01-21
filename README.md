@@ -1,7 +1,7 @@
 
 # Transcription Service
 
-Using whisper.cpp and llama.cpp w/ Mistral model to transcribe, clean, and summarize audio.
+Using whisper.cpp and llama.cpp w/ Mixtral model to transcribe, clean, and summarize audio.
 
 Note: This work has been done on M1 Mac Mini. It runs just OK. I can imagine a better computer would do much better.
 
